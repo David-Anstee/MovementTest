@@ -6,6 +6,7 @@
 #include "CustomCharacterMovementComponent.h"
 #include "..\Public\TestCharacter.h"
 #include "InventoryComponent.h"
+#include "InventoryItem.h"
 
 // Sets default values
 ATestCharacter::ATestCharacter(const FObjectInitializer& ObjectInitializer)
@@ -290,6 +291,19 @@ void ATestCharacter::CalcEffectiveMaxStamina()
 	float newStamina = (checkCurrentStamina / checkOldStamina) * checkMaxStamina;
 	newStamina = FMath::RoundHalfFromZero(newStamina);
 	CurrentStamina = FMath::Max(static_cast<int>(newStamina), 0);
+}
+
+
+#pragma endregion
+
+#pragma region inventory functions
+void ATestCharacter::UseItem(UInventoryItem* Item)
+{
+	if (Item)
+	{
+		Item->Use(this);
+		Item->OnUse(this);
+	}
 }
 
 #pragma endregion

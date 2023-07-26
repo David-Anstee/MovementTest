@@ -31,6 +31,18 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	// ...
 }
 
+bool UInventoryComponent::AddItem(UItem* Item)
+{
+	OnInventoryUpdated.Broadcast();
+	return true;
+}
+
+bool UInventoryComponent::RemoveItem(UItem* Item)
+{
+	OnInventoryUpdated.Broadcast();
+	return true;
+}
+
 
 void UInventoryComponent::DebugPrintInventory()
 {

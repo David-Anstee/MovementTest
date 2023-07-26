@@ -4,13 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "InventoryItem.h"
 #include "Item.generated.h"
 
 UCLASS()
 class MOVEMENTTEST_API AItem : public AActor
 {
 	GENERATED_BODY()
-	
+
+public:
+
 	UPROPERTY(VisibleAnywhere, Category = "Item")
 		UStaticMeshComponent* VisualMesh;
 
@@ -21,17 +24,14 @@ class MOVEMENTTEST_API AItem : public AActor
 		int32 AmountAddedOnPickup = 1;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
-		int32 InventoryItem;
+		TSubclassOf<UInventoryItem> InventoryItem;
 
-public:	
 	// Sets default values for this actor's properties
 	AItem();
 
-protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

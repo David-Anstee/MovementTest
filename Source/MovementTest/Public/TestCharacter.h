@@ -12,7 +12,7 @@ class MOVEMENTTEST_API ATestCharacter : public ACharacter
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement) class UCustomCharacterMovementComponent* CustomCharacterMovementComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Movement") class UCustomCharacterMovementComponent* CustomCharacterMovementComponent;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory") class UInventoryComponent* InventoryComponent;
 
 public:
@@ -66,6 +66,9 @@ public:
 #pragma endregion
 
 #pragma region inventory functions
+
+	UFUNCTION(BlueprintCallable, Category = "Items")
+		void UseItem(class UInventoryItem* Item);
 
 #pragma endregion
 
