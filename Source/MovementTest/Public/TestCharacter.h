@@ -68,6 +68,9 @@ public:
 #pragma region inventory functions
 
 	UFUNCTION(BlueprintCallable, Category = "Items")
+		void GiveItem(class UInventoryItem* Item);
+
+	UFUNCTION(BlueprintCallable, Category = "Items")
 		void UseItem(class UInventoryItem* Item);
 
 #pragma endregion

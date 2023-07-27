@@ -40,7 +40,11 @@ void AItem::BeginInteraction(ATestCharacter* interactingCharacter)
 {
 	if (IsValid(interactingCharacter))
 	{
-		Destroy();
+		if (IsValid(PickupItem))
+		{
+			interactingCharacter->GiveItem(PickupItem);
+			Destroy();
+		}
 	}
 }
 

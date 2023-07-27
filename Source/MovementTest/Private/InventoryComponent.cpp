@@ -31,20 +31,17 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	// ...
 }
 
-bool UInventoryComponent::AddItem(UItem* Item)
-{
-	OnInventoryUpdated.Broadcast();
-	return true;
-}
-
-bool UInventoryComponent::RemoveItem(UItem* Item)
-{
-	OnInventoryUpdated.Broadcast();
-	return true;
-}
-
-
 void UInventoryComponent::DebugPrintInventory()
 {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Test")));
+	for (auto& Item : InventoryItemList)
+	{
+		FText Name = (Item->ItemName);
+		FString DelMe = (Item->ItemName).ToString();
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, DelMe);
+	}
+}
+
+void UInventoryComponent::AddItem(UInventoryItem* Item)
+{
+	InventoryItemList.Add(Item);
 }

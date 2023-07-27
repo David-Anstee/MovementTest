@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "InventoryItem.h"
 #include "InventoryComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdated);
@@ -23,10 +24,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	bool AddItem(class UItem* Item);
-	bool RemoveItem(class UItem* Item);
-
 	UFUNCTION(BluePrintCallable) void DebugPrintInventory();
+
+	UFUNCTION(BluePrintCallable) void AddItem(UInventoryItem* Item);
 
 	UPROPERTY(EditDefaultsOnly, Instanced)
 		TArray<class UInventoryItem*> DefaultItems;

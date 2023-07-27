@@ -297,6 +297,13 @@ void ATestCharacter::CalcEffectiveMaxStamina()
 #pragma endregion
 
 #pragma region inventory functions
+
+
+void ATestCharacter::GiveItem(UInventoryItem* Item)
+{
+	InventoryComponent->AddItem(Item);
+}
+
 void ATestCharacter::UseItem(UInventoryItem* Item)
 {
 	if (Item)

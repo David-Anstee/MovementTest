@@ -23,8 +23,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
 		int32 AmountAddedOnPickup = 1;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Item")
-		TSubclassOf<UInventoryItem> InventoryItem;
+	UPROPERTY(Instanced, EditDefaultsOnly, Category = "Item")
+		UInventoryItem* PickupItem;
 
 	// Sets default values for this actor's properties
 	AItem();
