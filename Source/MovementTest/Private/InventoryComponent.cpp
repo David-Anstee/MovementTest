@@ -35,8 +35,7 @@ void UInventoryComponent::DebugPrintInventory()
 {
 	for (auto& Item : InventoryItemList)
 	{
-		FText Name = (Item->ItemName);
-		FString DelMe = (Item->ItemName).ToString();
+		FString DelMe = (Item->ItemID).ToString();
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, DelMe);
 	}
 }

@@ -153,12 +153,12 @@ void UCustomCharacterMovementComponent::RevertWalk()											//In testing
 
 #pragma region sprint functions
 
-void UCustomCharacterMovementComponent::SprintPressed()											//Should be called by pressing the 'sprint' key; should toggle OFF sprint (via UpdateCharacterStateBeforeMovement())
+void UCustomCharacterMovementComponent::SprintPressed()											//lets UpdateCharacterStateBeforeMovement() know it needs to toggle sprint ON. Called by pressing the 'sprint' key
 {
 	bWantsToSprint = true;
 }
 
-void UCustomCharacterMovementComponent::SprintReleased()										//Should be called by releasing the 'sprint' key; should toggle OFF sprint (via UpdateCharacterStateBeforeMovement())
+void UCustomCharacterMovementComponent::SprintReleased()										//lets UpdateCharacterStateBeforeMovement() know it needs to toggle sprint OFF. Called by releasing the 'sprint' key
 {
 	bWantsToSprint = false;
 }
@@ -168,7 +168,7 @@ void UCustomCharacterMovementComponent::SprintToggle()											//In testing
 	bWantsToSprint = !bWantsToSprint;
 }
 
-void UCustomCharacterMovementComponent::ApplySprint()											//Should be called when in Walking mode and sprinting is valid (See SprintIsValid())
+void UCustomCharacterMovementComponent::ApplySprint()											//Called when in Walking mode and sprinting is valid (i.e. SprintIsValid() = true)
 {
 	bIsSprinting = true;
 
@@ -179,7 +179,7 @@ void UCustomCharacterMovementComponent::ApplySprint()											//Should be call
 	bWantsToCrouch = false;
 }
 
-void UCustomCharacterMovementComponent::RevertSprint()											//Should be called when in Walking mode and sprinting is invalid (See SprintIsValid())
+void UCustomCharacterMovementComponent::RevertSprint()											//Called when in Walking mode and sprinting is invalid (i.e. SprintIsValid() = false)
 {
 	bIsSprinting = false;
 

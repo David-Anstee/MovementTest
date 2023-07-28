@@ -31,7 +31,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Instanced)
 		TArray<class UInventoryItem*> DefaultItems;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
+	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
 		TArray<class UInventoryItem*> InventoryItemList;
 
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")

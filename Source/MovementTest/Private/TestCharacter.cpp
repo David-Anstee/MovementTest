@@ -32,7 +32,7 @@ void ATestCharacter::BeginPlay()
 void ATestCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (CustomCharacterMovementComponent->IsSprinting())
+	if (CustomCharacterMovementComponent->IsSprinting() && CustomCharacterMovementComponent->IsMovingOnGround())
 	{
 		SprintStaminaPause = 1.0;
 		CustomCharacterMovementComponent->IncreaseSprintDrainStaminaTimer(DeltaTime);
