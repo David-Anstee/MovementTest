@@ -19,7 +19,7 @@ void UInventoryComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+
 }
 
 
@@ -43,4 +43,13 @@ void UInventoryComponent::DebugPrintInventory()
 void UInventoryComponent::AddItem(UInventoryItem* Item)
 {
 	InventoryItemList.Add(Item);
+}
+
+void UInventoryComponent::AddDefaultInventory()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "DefInv Init");
+	for (auto& Item : DefaultItems)
+	{
+		AddItem(Item);
+	}
 }

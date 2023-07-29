@@ -28,11 +28,13 @@ public:
 
 	UFUNCTION(BluePrintCallable) void AddItem(UInventoryItem* Item);
 
-	UPROPERTY(EditDefaultsOnly, Instanced)
-		TArray<class UInventoryItem*> DefaultItems;
+	UFUNCTION(BluePrintCallable) void AddDefaultInventory();
 
 	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
 		TArray<class UInventoryItem*> InventoryItemList;
+
+	UPROPERTY(EditDefaultsOnly, Instanced)
+		TArray<class UInventoryItem*> DefaultItems;
 
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 		FOnInventoryUpdated OnInventoryUpdated;

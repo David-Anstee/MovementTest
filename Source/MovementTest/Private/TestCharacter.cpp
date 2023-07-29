@@ -306,7 +306,7 @@ void ATestCharacter::GiveItem(UInventoryItem* Item)
 
 void ATestCharacter::UseItem(UInventoryItem* Item)
 {
-	if (Item)
+	if (IsValid(Item))
 	{
 		Item->Use(this);
 		Item->OnUse(this);
