@@ -35,7 +35,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BluePrintCallable) void BeginInteraction(ATestCharacter* interactingCharacter);
+	UFUNCTION(BluePrintCallable) void BeginInteraction(ATestCharacter* interactingCharacter, int32 amount);
 	
 	UPROPERTY(BlueprintReadWrite, Category = "Item")
 		bool CanInteract = true;

@@ -68,12 +68,14 @@ public:
 #pragma region inventory functions
 
 	UFUNCTION(BlueprintCallable, Category = "Items")
-		void GiveItem(class UInventoryItem* Item);
+		void GiveItem(class UInventoryItem* Item, int32 amount);
 
 	UFUNCTION(BlueprintCallable, Category = "Items")
 		void UseItem(class UInventoryItem* Item);
 
 #pragma endregion
+
+#pragma region variables
 
 	UPROPERTY(BlueprintReadOnly) float MaxSideStrafeSpeed = 0.625;
 	UPROPERTY(BlueprintReadOnly) float MaxBackwardsSpeed = 0.625;
@@ -96,6 +98,8 @@ public:
 	UPROPERTY(BlueprintReadOnly) float ExhaustReoveryTimer = 0.f;
 	UPROPERTY(BlueprintReadOnly) float IsExhausted = false;						//used for stamina; set to true when stamina runs out, the back to false after a few seconds
 	UPROPERTY(BlueprintReadOnly) float SprintStaminaPause;
+
+#pragma endregion
 
 	FORCEINLINE UCustomCharacterMovementComponent* GetCustomCharacterMovement() const { return CustomCharacterMovementComponent; }
 

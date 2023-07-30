@@ -9,15 +9,13 @@ AItem::AItem()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	PickupItem = nullptr;
+
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	VisualMesh->SetupAttachment(RootComponent);
-
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT(""));
-
-	if (CubeVisualAsset.Succeeded())
+	
+	if (VisualMesh)
 	{
-		VisualMesh->SetStaticMesh(CubeVisualAsset.Object);
-		VisualMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+		VisualMesh->SetupAttachment(RootComponent);
 	}
 
 }
@@ -36,13 +34,13 @@ void AItem::Tick(float DeltaTime)
 
 }
 
-void AItem::BeginInteraction(ATestCharacter* interactingCharacter)
+void AItem::BeginInteraction(ATestCharacter* interactingCharacter, int32 amount = 1)
 {
 	if (IsValid(interactingCharacter))
 	{
 		if (IsValid(PickupItem))
 		{
-			interactingCharacter->GiveItem(PickupItem);
+			interactingCharacter->GiveItem(PickupItem, amount);
 			Destroy();
 		}
 	}

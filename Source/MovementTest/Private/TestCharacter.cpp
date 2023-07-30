@@ -299,7 +299,7 @@ void ATestCharacter::CalcEffectiveMaxStamina()
 #pragma region inventory functions
 
 
-void ATestCharacter::GiveItem(UInventoryItem* Item)
+void ATestCharacter::GiveItem(UInventoryItem* Item, int32 amount = 1)
 {
 	InventoryComponent->AddItem(Item);
 }

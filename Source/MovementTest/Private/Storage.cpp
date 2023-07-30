@@ -14,14 +14,10 @@ AStorage::AStorage()
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
 
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	VisualMesh->SetupAttachment(RootComponent);
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT(""));
-
-	if (CubeVisualAsset.Succeeded())
+	if (VisualMesh)
 	{
-		VisualMesh->SetStaticMesh(CubeVisualAsset.Object);
-		VisualMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+		VisualMesh->SetupAttachment(RootComponent);
 	}
 }
 
