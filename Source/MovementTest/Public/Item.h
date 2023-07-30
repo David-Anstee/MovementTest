@@ -17,7 +17,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Item")
 		UStaticMeshComponent* VisualMesh;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Item")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
 		FText ItemDisplayName;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Item")

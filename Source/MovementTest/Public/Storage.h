@@ -18,7 +18,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Storage")
 		UStaticMeshComponent* VisualMesh;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Storage")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Storage")
 		FText ItemDisplayName;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Storage")
