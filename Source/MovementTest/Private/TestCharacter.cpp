@@ -7,6 +7,7 @@
 #include "..\Public\TestCharacter.h"
 #include "InventoryComponent.h"
 #include "InventoryItem.h"
+#include "Item.h"
 
 // Sets default values
 ATestCharacter::ATestCharacter(const FObjectInitializer& ObjectInitializer)
@@ -299,9 +300,9 @@ void ATestCharacter::CalcEffectiveMaxStamina()
 #pragma region inventory functions
 
 
-void ATestCharacter::GiveItem(UInventoryItem* Item, int32 amount = 1)
+void ATestCharacter::GiveItem(UInventoryItem* Item, int32 amount)
 {
-	InventoryComponent->AddItem(Item);
+	InventoryComponent->AddItem(Item, amount);
 }
 
 void ATestCharacter::UseItem(UInventoryItem* Item)
@@ -310,6 +311,13 @@ void ATestCharacter::UseItem(UInventoryItem* Item)
 	{
 		Item->Use(this);
 		Item->OnUse(this);
+	}
+}
+
+void ATestCharacter::DropItem(UInventoryItem* Item, int32 amount)
+{
+	if (IsValid(Item))
+	{
 	}
 }
 

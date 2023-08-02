@@ -26,7 +26,7 @@ public:
 
 	UFUNCTION(BluePrintCallable) void DebugPrintInventory();
 
-	UFUNCTION(BluePrintCallable) void AddItem(UInventoryItem* Item);
+	UFUNCTION(BluePrintCallable) void AddItem(UInventoryItem* Item, int32 amount = 1);
 
 	UFUNCTION(BluePrintCallable) void AddDefaultInventory();
 

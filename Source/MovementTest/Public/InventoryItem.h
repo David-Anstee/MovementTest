@@ -23,6 +23,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
 		FText ItemName;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
+		AItem* DropItem;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item", meta = (MultiLine = true))
 		FText ItemDescription;
 

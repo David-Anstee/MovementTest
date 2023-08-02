@@ -40,9 +40,12 @@ void UInventoryComponent::DebugPrintInventory()
 	}
 }
 
-void UInventoryComponent::AddItem(UInventoryItem* Item)
+void UInventoryComponent::AddItem(UInventoryItem* Item, int32 amount)
 {
-	InventoryItemList.Add(Item);
+	for (int i = 0; i < amount; i++)
+	{
+		InventoryItemList.Add(Item);
+	}
 }
 
 void UInventoryComponent::AddDefaultInventory()

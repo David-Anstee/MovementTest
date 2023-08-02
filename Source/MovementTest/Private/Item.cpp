@@ -34,13 +34,13 @@ void AItem::Tick(float DeltaTime)
 
 }
 
-void AItem::BeginInteraction(ATestCharacter* interactingCharacter, int32 amount = 1)
+void AItem::BeginInteraction(ATestCharacter* interactingCharacter)
 {
 	if (IsValid(interactingCharacter))
 	{
 		if (IsValid(PickupItem))
 		{
-			interactingCharacter->GiveItem(PickupItem, amount);
+			interactingCharacter->GiveItem(PickupItem, AmountAddedOnPickup);
 			Destroy();
 		}
 	}
