@@ -7,6 +7,6 @@ UInventoryItem::UInventoryItem()
 {
 	ItemName = FText::FromString("UNNAMED ITEM");
 	ItemDescription = FText::FromString("NO ITEM DESCRIPTION");
-	DefaultDropItem = nullptr;
 	Weight = 0.f;
 }
+

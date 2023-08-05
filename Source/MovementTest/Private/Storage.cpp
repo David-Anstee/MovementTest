@@ -2,6 +2,7 @@
 
 
 #include "Storage.h"
+
 #include "InventoryComponent.h"
 #include "TestCharacter.h"
 
@@ -48,8 +49,13 @@ void AStorage::BeginInteraction(ATestCharacter* interactingCharacter)
 	}
 }
 
-void AStorage::GiveItem(UInventoryItem* Item)
+void AStorage::TakeItem(UInventoryItem* Item, int32 amount)
 {
-	InventoryComponent->AddItem(Item);
+	InventoryComponent->RemoveItem(Item, amount);
+}
+
+void AStorage::GiveItem(UInventoryItem* Item, int32 amount)
+{
+	InventoryComponent->AddItem(Item, amount);
 }
 

@@ -23,14 +23,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
 		FText ItemName;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
-		AItem* DropItem;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item", meta = (MultiLine = true))
 		FText ItemDescription;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item", meta = (ClampMin = 0.0))
 		float Weight;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
+		TSubclassOf<AActor> DropItem = AActor::StaticClass();
 
 	UPROPERTY()
 		class UInventoryComponent* OwningInventory;
@@ -39,4 +39,5 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void OnUse(class ATestCharacter* Character);
+
 };

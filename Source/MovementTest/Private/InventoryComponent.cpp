@@ -2,6 +2,8 @@
 
 #include "InventoryComponent.h"
 
+#include "InventoryItem.h"
+
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
@@ -46,6 +48,50 @@ void UInventoryComponent::AddItem(UInventoryItem* Item, int32 amount)
 	{
 		InventoryItemList.Add(Item);
 	}
+}
+
+void UInventoryComponent::RemoveItem(UInventoryItem* Item, int32 amount)
+{
+	for (int i = 0; i < amount; i++)
+	{
+		InventoryItemList.RemoveSingle(Item);
+	}
+}
+
+bool UInventoryComponent::DonateItem(UInventoryComponent* RecipientInventory, UInventoryItem* Item, int32 amount)
+{
+	bool confirmationCheck = false;
+	if (IsValid(RecipientInventory))
+	{
+		RecipientInventory->AddItem(Item, amount);
+		RemoveItem(Item, amount);
+		confirmationCheck = true;
+	}
+	return confirmationCheck;
+}
+
+bool UInventoryComponent::StealItem(UInventoryComponent* DonorInventory, UInventoryItem* Item, int32 amount)
+{
+	bool confirmationCheck = false;
+	if (IsValid(DonorInventory))
+	{
+		AddItem(Item, amount);
+		DonorInventory->RemoveItem(Item, amount);
+		confirmationCheck = true;
+	}
+	return confirmationCheck;
+}
+
+bool UInventoryComponent::ExchangeItem(UInventoryComponent* TradingInventory, UInventoryItem* ItemGiven, UInventoryItem* ItemTaken, int32 amountGiven, int32 amountTaken)
+{
+	bool confirmationCheck = false;
+	if (IsValid(TradingInventory))
+	{
+		confirmationCheck = true;
+		StealItem(TradingInventory, ItemTaken, amountTaken);
+		DonateItem(TradingInventory, ItemGiven, amountGiven);
+	}
+	return confirmationCheck;
 }
 
 void UInventoryComponent::AddDefaultInventory()

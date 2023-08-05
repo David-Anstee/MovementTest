@@ -30,7 +30,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-#pragma region health / stamina functions
+#pragma region health functions
 
 	void RegenStamina(float deltaTime);
 
@@ -47,6 +47,10 @@ public:
 	UFUNCTION(BluePrintCallable) void SetCurrentHealth(int health);
 
 	UFUNCTION(BluePrintCallable) void CalcEffectiveMaxHealth();							//Applies temporary modifier to effective max health.
+
+#pragma endregion
+
+#pragma region stamina functions
 
 
 	UFUNCTION(BluePrintCallable) void ApplyStaminaDamage(float damage);						//Takes a (positive) float as damage, subtracts it from character's current health
@@ -71,10 +75,13 @@ public:
 		void GiveItem(class UInventoryItem* Item, int32 amount = 1);
 
 	UFUNCTION(BlueprintCallable, Category = "Items")
+		void TakeItem(class UInventoryItem* Item, int32 amount = 1);
+
+	UFUNCTION(BlueprintCallable, Category = "Items")
 		void UseItem(class UInventoryItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Items")
-		void DropItem(class UInventoryItem* Item, int32 amount = 1);
+		void DropItem(class UInventoryItem* inventoryItem);
 
 #pragma endregion
 

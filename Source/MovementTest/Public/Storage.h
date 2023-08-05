@@ -39,6 +39,10 @@ public:
 
 	UFUNCTION(BluePrintCallable) 
 		void BeginInteraction(ATestCharacter* interactingCharacter);
+
 	UFUNCTION(BlueprintCallable, Category = "Items")
-		void GiveItem(class UInventoryItem* Item);
+		void GiveItem(class UInventoryItem* Item, int32 amount = 1);
+
+	UFUNCTION(BlueprintCallable, Category = "Items")
+		void TakeItem(class UInventoryItem* Item, int32 amount = 1);
 };

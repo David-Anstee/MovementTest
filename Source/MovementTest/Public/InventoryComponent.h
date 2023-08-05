@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "InventoryItem.h"
 #include "InventoryComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdated);
@@ -27,6 +26,17 @@ public:
 	UFUNCTION(BluePrintCallable) void DebugPrintInventory();
 
 	UFUNCTION(BluePrintCallable) void AddItem(UInventoryItem* Item, int32 amount = 1);
+
+	UFUNCTION(BluePrintCallable) void RemoveItem(UInventoryItem* Item, int32 amount = 1);
+
+	//Removes item(s) from this inventory and adds the same item(s) to another
+	UFUNCTION(BluePrintCallable) bool DonateItem(UInventoryComponent* RecipientInventory, UInventoryItem* Item, int32 amount = 1);
+
+	//Adds item(s) to this inventory and removes the same item(s) from another
+	UFUNCTION(BluePrintCallable) bool StealItem(UInventoryComponent* DonorInventory, UInventoryItem* Item, int32 amount = 1);
+
+	//Adds item(s) to this inventory and removes the same item(s) from another
+	UFUNCTION(BluePrintCallable) bool ExchangeItem(UInventoryComponent* TradingInventory, UInventoryItem* ItemGiven, UInventoryItem* ItemTaken, int32 amountGiven = 1, int32 amountTaken = 1);
 
 	UFUNCTION(BluePrintCallable) void AddDefaultInventory();
 

@@ -4,7 +4,7 @@
 #include "TestCharacter.h"
 
 #include "CustomCharacterMovementComponent.h"
-#include "..\Public\TestCharacter.h"
+//#include "..\Public\TestCharacter.h"
 #include "InventoryComponent.h"
 #include "InventoryItem.h"
 #include "Item.h"
@@ -305,6 +305,11 @@ void ATestCharacter::GiveItem(UInventoryItem* Item, int32 amount)
 	InventoryComponent->AddItem(Item, amount);
 }
 
+void ATestCharacter::TakeItem(UInventoryItem* Item, int32 amount)
+{
+	InventoryComponent->RemoveItem(Item, amount);
+}
+
 void ATestCharacter::UseItem(UInventoryItem* Item)
 {
 	if (IsValid(Item))
@@ -314,10 +319,22 @@ void ATestCharacter::UseItem(UInventoryItem* Item)
 	}
 }
 
-void ATestCharacter::DropItem(UInventoryItem* Item, int32 amount)
+void ATestCharacter::DropItem(UInventoryItem* inventoryItem)
 {
-	if (IsValid(Item))
+	if (IsValid(inventoryItem) && IsValid(inventoryItem->DropItem))
 	{
+		UWorld* thisWorld = GetWorld();
+		FVector targetLocation = GetActorLocation() + 150*GetActorForwardVector();
+		FRotator targetRotation = GetActorRotation();
+
+		TSubclassOf<AActor> spawnedItem = inventoryItem->DropItem;
+
+		AActor* SpawnedActor = thisWorld->SpawnActor<AActor>(spawnedItem, targetLocation, targetRotation);
+
+		if (IsValid(SpawnedActor))
+		{
+			TakeItem(inventoryItem);
+		}
 	}
 }
 
