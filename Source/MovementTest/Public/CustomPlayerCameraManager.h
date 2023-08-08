@@ -19,7 +19,7 @@ public:
 
 	void ApplySprintFOV();								//Called in UpdateViewTarget; transitions FOV to a higher target when the player is sprinting
 	void RevertSprintFOV();								//Called in UpdateViewTarget; transitions FOV to the default when the player is not sprinting
-	float PlayerFOV = GetFOVAngle();					//Should be equal to the FOV set by the player; not currently the case (Will always be 90)
+	float PlayerFOV = 90;									//Should be equal to the FOV set by the player; not currently the case (Will always be 90)
 	float SprintFOV = PlayerFOV;						//SprintFOV is the value used when shifting FOV because of sprinting; constantly updated so that transitions are smooth
 };
 
