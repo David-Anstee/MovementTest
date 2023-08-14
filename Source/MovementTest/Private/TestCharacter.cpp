@@ -319,24 +319,72 @@ void ATestCharacter::UseItem(UInventoryItem* Item)
 	}
 }
 
-void ATestCharacter::DropItem(UInventoryItem* inventoryItem)
+void ATestCharacter::DropItem(UInventoryItem* inventoryItem, UCameraComponent* camera = nullptr)
 {
-	if (IsValid(inventoryItem) && IsValid(inventoryItem->DropItem))
+	FVector DropLocation;
+	FHitResult Hit;
+
+	FVector TraceStart;
+	FVector TraceEnd;
+
+	if (IsValid(camera))
 	{
-		UWorld* thisWorld = GetWorld();
-		FVector targetLocation = GetActorLocation() + 150*GetActorForwardVector();
-		FRotator targetRotation = GetActorRotation();
+		TraceStart = camera->GetComponentLocation();
+		TraceEnd = TraceStart + (camera->GetComponentRotation().Vector() * 187.5f);
+	}
+	else
+	{
+		TraceStart = GetActorLocation();
+		TraceEnd = TraceStart + (GetActorForwardVector() * 187.5f);
+	}
 
-		TSubclassOf<AActor> spawnedItem = inventoryItem->DropItem;
+	ECollisionChannel DropCollisionChannel = ECC_Visibility;
 
-		AActor* SpawnedActor = thisWorld->SpawnActor<AActor>(spawnedItem, targetLocation, targetRotation);
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
 
-		if (IsValid(SpawnedActor))
-		{
-			TakeItem(inventoryItem);
-		}
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, DropCollisionChannel, QueryParams);
+
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Blue : FColor::Red, false, 5.0f, 0, 10.0f);
+	UE_LOG(LogTemp, Log, TEXT("Tracing line: %s to %s"), *TraceStart.ToCompactString(), *TraceEnd.ToCompactString());
+
+	if (!Hit.bBlockingHit)
+	{
+		DropLocation = TraceEnd;
+	}
+	else if (Hit.bBlockingHit)
+	{
+		DropLocation = Hit.ImpactPoint;
+	}
+
+	UWorld* thisWorld = GetWorld();
+	FRotator targetRotation = GetActorRotation();
+
+	TSubclassOf<AActor> spawnedItem = inventoryItem->DropItem;
+	
+	AActor* SpawnedActor = thisWorld->SpawnActor<AActor>(spawnedItem, DropLocation, targetRotation);
+	
+	if (IsValid(SpawnedActor))
+	{
+		TakeItem(inventoryItem);
 	}
 }
+
+//if (IsValid(inventoryItem) && IsValid(inventoryItem->DropItem))
+//{
+//	UWorld* thisWorld = GetWorld();
+//	FVector targetLocation = GetActorLocation() + 150 * GetActorForwardVector();
+//	FRotator targetRotation = GetActorRotation();
+//
+//	TSubclassOf<AActor> spawnedItem = inventoryItem->DropItem;
+//
+//	AActor* SpawnedActor = thisWorld->SpawnActor<AActor>(spawnedItem, targetLocation, targetRotation);
+//
+//	if (IsValid(SpawnedActor))
+//	{
+//		TakeItem(inventoryItem);
+//	}
+//}
 
 #pragma endregion
 

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Engine.h"
 #include "GameFramework/Character.h"
 #include "TestCharacter.generated.h"
 
@@ -81,7 +81,7 @@ public:
 		void UseItem(class UInventoryItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Items")
-		void DropItem(class UInventoryItem* inventoryItem);
+		void DropItem(class UInventoryItem* inventoryItem, UCameraComponent* camera);
 
 #pragma endregion
 
