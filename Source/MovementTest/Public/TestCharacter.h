@@ -4,7 +4,10 @@
 
 #include "Engine.h"
 #include "GameFramework/Character.h"
+#include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "TestCharacter.generated.h"
+
 
 UCLASS()
 class MOVEMENTTEST_API ATestCharacter : public ACharacter
@@ -19,6 +22,17 @@ public:
 	// Sets default values for this character's properties
 	ATestCharacter(const FObjectInitializer& ObjectInitializer);
 
+	//First-person mesh (arms), visible only to the owning player.
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+		USkeletalMeshComponent* FP_Mesh;
+	
+	// FPS camera.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		UCameraComponent* FirstPersonCameraComponent;
+
+	UPROPERTY(Instanced, EditDefaultsOnly, BlueprintReadOnly, Category = "Equipment")
+		class UEquipmentItem* EquippedItem;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,6 +43,13 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	bool bPressedCustomJump;
+
+	virtual void Jump() override;
+	virtual void StopJumping() override;
+
+	FCollisionQueryParams GetIgnoreCharacterParams() const;
 
 #pragma region health functions
 
@@ -81,7 +102,10 @@ public:
 		void UseItem(class UInventoryItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Items")
-		void DropItem(class UInventoryItem* inventoryItem, UCameraComponent* camera);
+		void DropItem(class UInventoryItem* inventoryItem);
+
+	UFUNCTION(BlueprintCallable, Category = "Equipment")
+		void UseHeldEquipment(class UEquipmentItem* equipment);
 
 #pragma endregion
 

@@ -8,19 +8,51 @@
 #include "InventoryComponent.h"
 #include "InventoryItem.h"
 #include "Item.h"
+#include "EquipmentItem.h"
 
 // Sets default values
 ATestCharacter::ATestCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer.SetDefaultSubobjectClass<UCustomCharacterMovementComponent>(CharacterMovementComponentName))
 {
-
-	CustomCharacterMovementComponent = Cast<UCustomCharacterMovementComponent>(GetCharacterMovement());
-
-	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
-
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Create a first person camera component.
+	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	check(FirstPersonCameraComponent != nullptr);
+
+	// Attach the camera component to our capsule component.
+	FirstPersonCameraComponent->SetupAttachment(CastChecked<USceneComponent, UCapsuleComponent>(GetCapsuleComponent()));
+
+	// Position the camera slightly above the eyes.
+	FirstPersonCameraComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f + BaseEyeHeight));
+
+	// Enable the pawn to control camera rotation.
+	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+
+	// Create a first person mesh component for the owning player.
+	FP_Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FirstPersonMesh"));
+	check(FP_Mesh != nullptr);
+
+	// Only the owning player sees this mesh.
+	FP_Mesh->SetOnlyOwnerSee(true);
+	
+	// Attach the FPS mesh to the FPS camera.
+	FP_Mesh->SetupAttachment(FirstPersonCameraComponent);
+	
+	// Disable some environmental shadows to preserve the illusion of having a single mesh.
+	FP_Mesh->bCastDynamicShadow = false;
+	FP_Mesh->CastShadow = false;
+
+	// Setup Custom Movement Component
+	CustomCharacterMovementComponent = Cast<UCustomCharacterMovementComponent>(GetCharacterMovement());
+
+	// Setup Inventory Component
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
+
+	EquippedItem = nullptr;
+
+	GetMesh()->SetOwnerNoSee(true);
 }
 
 // Called when the game starts or when spawned
@@ -87,6 +119,34 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void ATestCharacter::Jump()
+{
+	Super::Jump();
+
+	bPressedCustomJump = true;
+
+	bPressedJump = false;
+}
+
+void ATestCharacter::StopJumping()
+{
+	Super::StopJumping();
+
+	bPressedCustomJump = false;
+}
+
+FCollisionQueryParams ATestCharacter::GetIgnoreCharacterParams() const
+{
+	FCollisionQueryParams Params;
+	
+	TArray<AActor*> CharacterChildren;
+	GetAllChildActors(CharacterChildren);
+	Params.AddIgnoredActors(CharacterChildren);
+	Params.AddIgnoredActor(this);
+	
+	return Params;
 }
 
 void ATestCharacter::RegenStamina(float deltaTime)
@@ -319,8 +379,10 @@ void ATestCharacter::UseItem(UInventoryItem* Item)
 	}
 }
 
-void ATestCharacter::DropItem(UInventoryItem* inventoryItem, UCameraComponent* camera = nullptr)
+void ATestCharacter::DropItem(UInventoryItem* inventoryItem)
 {
+	UCameraComponent* camera = FirstPersonCameraComponent;
+
 	FVector DropLocation;
 	FHitResult Hit;
 
@@ -367,6 +429,15 @@ void ATestCharacter::DropItem(UInventoryItem* inventoryItem, UCameraComponent* c
 	if (IsValid(SpawnedActor))
 	{
 		TakeItem(inventoryItem);
+	}
+}
+
+void ATestCharacter::UseHeldEquipment(UEquipmentItem* equipment)
+{
+	if (IsValid(equipment))
+	{
+		equipment->UseEquipment(this);
+		equipment->OnUse(this);
 	}
 }
 

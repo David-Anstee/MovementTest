@@ -13,5 +13,16 @@ UCLASS()
 class MOVEMENTTEST_API UEquipmentItem : public UInventoryItem
 {
 	GENERATED_BODY()
-	
+
+public:
+
+	/** Attaches the actor to a FirstPersonCharacter */
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void AttachEquipment(ATestCharacter* TargetCharacter);
+
+	virtual void UseEquipment(ATestCharacter* UserCharacter);
+
+private:
+	/** The Character holding this equipment*/
+	ATestCharacter* Character;
 };

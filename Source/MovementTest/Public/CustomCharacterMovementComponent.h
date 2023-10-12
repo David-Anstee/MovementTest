@@ -25,7 +25,8 @@ class MOVEMENTTEST_API UCustomCharacterMovementComponent : public UCharacterMove
 
 #pragma region custom movement variables/parameters
 
-	//Parameters
+	// Walk, Jog, Sprint Speed
+
 	UPROPERTY(EditDefaultsOnly) float Jog_MaxWalkSpeed = 500;					//Max speed while jogging (i.e. not sprinting or crouching); basically the 'base speed'
 
 	UPROPERTY(EditDefaultsOnly) float Walk_MaxWalkSpeed = 0.625;				//Speed penalty while slowwalking, as a fraction of jog speed
@@ -39,10 +40,19 @@ class MOVEMENTTEST_API UCustomCharacterMovementComponent : public UCharacterMove
 	UPROPERTY(EditDefaultsOnly) float Sprint_MaxSideStrafeSpeed = 0.625;		//Max left-right strafe speed while sprinting, as a fraction of sprint speed
 	UPROPERTY(EditDefaultsOnly) float Sprint_MaxBackwardsSpeed = 0.625;			//Max backwards speed while sprinting, as a fraction of sprint speed
 
-
+	// Levitate
 	UPROPERTY(EditDefaultsOnly) float Levitate_UpDownSpeed = 50.f;				//Speed for levitating up/down
 	UPROPERTY(EditDefaultsOnly) float Levitate_AirSpeedMultiplier = 0.f;		//Multiplied by MaxSwimSpeed to get max speed for horizontal levitation
 
+	// Mantle
+	UPROPERTY(EditDefaultsOnly, Category = "Mantle") float MantleMaxDistance = 200;
+	UPROPERTY(EditDefaultsOnly, Category = "Mantle") float MantleReachHeight = 50;
+	UPROPERTY(EditDefaultsOnly, Category = "Mantle") float MantleMinDepth = 30;
+	UPROPERTY(EditDefaultsOnly, Category = "Mantle") float MantleMinWallSteepnessAngle = 75;
+	UPROPERTY(EditDefaultsOnly, Category = "Mantle") float MantleMaxSurfaceAngle = 40;
+	UPROPERTY(EditDefaultsOnly, Category = "Mantle") float MantleMaxAlignmentAngle= 45;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Mantle") int RayCount = 6;
 
 	float SprintDrainStaminaTimer;
 	FVector GlideForwardVector;
@@ -71,6 +81,7 @@ protected:
 
 public:
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
+	virtual void UpdateCharacterStateAfterMovement(float DeltaSeconds) override;
 
 protected:
 	virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
@@ -101,6 +112,14 @@ private:
 	void ExitGlide();
 	void PhysGlide(float deltaTime, int32 Iterations);
 
+	bool TryMantle();
+	FVector GetMantleStartLocation(FHitResult FrontHit, FHitResult SurfaceHit, bool bTallMantle) const;
+
+	float CapR() const;
+	float CapHH() const;
+
+
+
 public:
 	bool IsSprinting();
 	bool IsWalking();
@@ -109,6 +128,27 @@ public:
 	void ResetSprintStaminaTimer();
 	float getSprintStaminaTimer();
 
+	FVector MantleTargetLocation;
+
+	TSharedPtr<FRootMotionSource_MoveToForce> TransitionRMS;
+	FString TransitionName;
+	int TransitionRMS_ID;
+
+	TSharedPtr<FRootMotionSource_MoveToForce> MantleRMS;
+	FString MantleName;
+	int MantleRMS_ID;
+
+
+	//UPROPERTY(Transient) UAnimMontage* TransitionQueuedMontage;
+	//UPROPERTY(EditDefaultsOnly) UAnimMontage* TallMantleMontage;
+	//UPROPERTY(EditDefaultsOnly) UAnimMontage* ShortMantleMontage;
+	//UPROPERTY(EditDefaultsOnly) UAnimMontage* TransitionTallMantleMontage;
+	//UPROPERTY(EditDefaultsOnly) UAnimMontage* TransitionShortMantleMontage;
+
+	float TransitionQueuedMontageSpeed;
+
+	bool bHadAnimRootMotion;
+	bool bTransitionFinished;
 #pragma endregion
 
 #pragma region blueprint functions
